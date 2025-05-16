@@ -1,0 +1,9 @@
+# Ignore the API key file
+News_API_Key.txt
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Environment files
+.env

@@ -1,0 +1,10 @@
+Metadata-Version: 2.4
+Name: yufrosine
+Version: 0.1
+Requires-Python: >=3.8
+Requires-Dist: spacy
+Requires-Dist: pandas
+Requires-Dist: vaderSentiment
+Requires-Dist: newsapi-python
+Dynamic: requires-dist
+Dynamic: requires-python

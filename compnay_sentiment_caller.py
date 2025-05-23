@@ -64,7 +64,6 @@ def extract_cmpanies_from_listofdict(articles):
         combined_text = f"{title} {description}"
 
         companies = extract_companies_from_string(combined_text)
-        print(companies)
 
         if len(companies) > 0:
             company_mentions.append({
@@ -93,15 +92,6 @@ def filter_compy_mentions(article_list, whitelist):
             cleaned_companies.append(article)
     
     return cleaned_companies
-
-#Kept just in case, not used becuase less accurate, analizes sentiment using blob
-def analyze_sentiment_blob(pairs):
-    results = []
-    for title, description in pairs:
-        combined_text = f"{title}. {description}"
-        score = TextBlob(combined_text).sentiment.polarity  # Range: -1 to +1
-        results.append((title, score))
-    return results
 
 #Alaizes text using vader, better for titles
 def analyze_sentiment_vader(pairs):
@@ -143,25 +133,6 @@ def calc_each_company_score(cleaned_companies):
         sentiment_scores_return[company] = statistics.mean(sentiment_scores[company])
 
     return dict(sentiment_scores_return)
-
-#prints a summary of the results of the sentiment search
-def print_summary(results):
-    total = 0
-    print("\nSentiment Scores:\n")
-    for title, score in results:
-        print(f"[{score:+.2f}] {title}")
-        total += score
-    avg = total / len(results) if results else 0
-    print(f"\nAverage Sentiment Score: {avg:+.2f}")
-    return avg
-
-#calculates average score
-def avg_score(results):
-   for title, score in results:
-        print(f"[{score:+.2f}] {title}")
-        total += score
-   avg = total / len(results) if results else 0
-   return avg
 
 #Turns the score into an actual string saying good, bad, neutral, etc.
 # This is done so its easier to read, rather than seeing a number

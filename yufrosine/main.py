@@ -1,44 +1,14 @@
-from yufrosine import VaderAnalyzer, NewsApiSpacyFetcher
+from yufrosine import VaderAnalyzer, NewsApiSpaCyFetcher
 from collections import defaultdict
 import statistics
 
 
 def calc_company_scores(cleaned_articles, analyzer):
-    sentiment_scores = defaultdict(list)
-
-    for article in cleaned_articles:
-        title = article.get("title", "")
-        description = article.get("description", "")
-        combined_text = f"{title}. {description}"
-
-        score = analyzer.get_score(combined_text)
-
-        for company in article["companies"]:
-            sentiment_scores[company].append(score)
-
-    return {
-        company: statistics.mean(scores)
-        for company, scores in sentiment_scores.items()
-    }
+    return analyzer.get_score_list_dict(cleaned_articles)
 
 
 def calc_company_labels(cleaned_articles, analyzer):
-    sentiment_scores = defaultdict(list)
-
-    for article in cleaned_articles:
-        title = article.get("title", "")
-        description = article.get("description", "")
-        combined_text = f"{title}. {description}"
-
-        score = analyzer.get_score(combined_text)
-
-        for company in article["companies"]:
-            sentiment_scores[company].append(score)
-
-    return {
-        company: analyzer.get_lable(statistics.mean(scores))
-        for company, scores in sentiment_scores.items()
-    }
+    return analyzer.get_label_list_dict(cleaned_articles)
 
 
 def calc_company_frequency(cleaned_articles):
@@ -52,12 +22,12 @@ def calc_company_frequency(cleaned_articles):
 def run_demo():
     print("Fetching and analyzing articles...\n")
     
-    fetcher = NewsApiSpacyFetcher()
+    fetcher = NewsApiSpaCyFetcher()
     analyzer = VaderAnalyzer()
 
     cleaned_articles = fetcher.company_and_article_list(100)
 
-    print("Sample extracted articles:")
+    print(f"Sample extracted articles (5 from {len(cleaned_articles)} total):")
     for article in cleaned_articles[:5]:
         print(f"Title: {article['title']}")
         print(f"Companies: {article['companies']}")
@@ -74,6 +44,7 @@ def run_demo():
     print("\n--- Company Sentiment Ratings ---")
     ratings = calc_company_labels(cleaned_articles, analyzer)
     print(ratings)
+    #print("Work in progress")
 
 
 if __name__ == "__main__":

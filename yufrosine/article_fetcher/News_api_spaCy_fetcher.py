@@ -27,9 +27,11 @@ def get_key(filename):
             raise ValueError(f"{filename} exists but no api  key found")
         return key
 
-def load_company_list(filename = "smp500.csv"):
-    df = pd.read_csv(filename)
+def load_company_list(filename="s&p500.csv"):
+    filepath = os.path.join(os.path.dirname(__file__), filename)
+    df = pd.read_csv(filepath)
     return set(df["Security"].dropna().str.strip())
+
 
 
 def get_articles(request_size = 30):

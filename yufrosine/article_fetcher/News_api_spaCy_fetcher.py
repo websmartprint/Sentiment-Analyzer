@@ -2,6 +2,7 @@ from newsapi import NewsApiClient
 import os
 from datetime import datetime, timedelta
 import spacy
+from dotenv import load_dotenv
 import pandas as pd
 from collections import defaultdict
 import statistics
@@ -10,22 +11,19 @@ from .base import ArticleFetcher
 
 nlp = spacy.load("en_core_web_sm")
 
+ROOT_ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.env"))
+load_dotenv(dotenv_path=ROOT_ENV_PATH)
+
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-NEWSAPI_KEY_FILE = os.path.join(SCRIPT_DIR, "News_API_Key.txt")
+#NEWSAPI_KEY_FILE = os.path.join(SCRIPT_DIR, "News_API_Key.txt")
 
-def get_key(filename):
 
-    if not os.path.exists(filename):
-    #Create file
-        with open (filename, "w") as f:
-            f.write(f"YOUR API kere for {filename}")
-        raise FileNotFoundError(f"{filename} not found, {filename} created, please insert api key")
-    
-    with open(filename, "r") as api_key_file:
-        key = api_key_file.read()
-        if not key:
-            raise ValueError(f"{filename} exists but no api  key found")
-        return key
+def get_key():
+    key = os.getenv("NEWS_API_KEY")
+    if not key:
+        raise ValueError("Missing NEWS_API_KEY. Did you forget to set it in .env?")
+    return key
 
 def load_company_list(filename="s&p500.csv"):
     filepath = os.path.join(os.path.dirname(__file__), filename)
@@ -38,7 +36,7 @@ def get_articles(request_size = 30):
     #note max request size is 100 for newsapi, must split others into parts
     triggers = "stock OR market OR finance OR earnings OR economy"
 
-    newsapi = NewsApiClient(api_key = get_key(NEWSAPI_KEY_FILE))
+    newsapi = NewsApiClient(api_key = get_key())
 
     response = newsapi.get_everything(q=triggers, language='en', page_size=request_size)
     return response["articles"]

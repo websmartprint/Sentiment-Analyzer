@@ -1,0 +1,7 @@
+nltk
+spacy
+tqdm
+typer
+markdown-it-py
+numpy
+python-dotenv

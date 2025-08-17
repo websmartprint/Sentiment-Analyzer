@@ -1,6 +1,6 @@
 # Yufrosine
 
-Yufrosine is a lightweight sentiment analysis toolkit for financial news and stock filtering. It includes tools for fetching and analyzing news articles using rule-based NLP methods like VADER and spaCy.
+Yufrosine is a lightweight sentiment analysis toolkit for financial news and stock filtering. It includes tools for fetching and analyzing news articles using NLP methods like VADER and spaCy.
 
 ---
 
